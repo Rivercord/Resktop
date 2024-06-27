@@ -465,7 +465,7 @@ function createMainWindow() {
     return win;
 }
 
-const runRivercordMain = once(() => require(join(RIVERCORD_FILES_DIR, "RivercordDesktopMain.js")));
+const runRivercordMain = once(() => require(join(RIVERCORD_FILES_DIR, "rivercordDesktopMain.js")));
 
 export async function createWindows() {
     const startMinimized = process.argv.includes("--start-minimized");

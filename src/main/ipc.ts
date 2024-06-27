@@ -25,9 +25,9 @@ import { PopoutWindows } from "./utils/popout";
 import { isValidRivercordInstall } from "./utils/rivercordLoader";
 import { isDeckGameMode, showGamePage } from "./utils/steamOS";
 
-handleSync(IpcEvents.GET_RIVERCORD_PRELOAD_FILE, () => join(RIVERCORD_FILES_DIR, "RivercordDesktopPreload.js"));
+handleSync(IpcEvents.GET_RIVERCORD_PRELOAD_FILE, () => join(RIVERCORD_FILES_DIR, "rivercordDesktopPreload.js"));
 handleSync(IpcEvents.GET_RIVERCORD_RENDERER_SCRIPT, () =>
-    readFileSync(join(RIVERCORD_FILES_DIR, "RivercordDesktopRenderer.js"), "utf-8")
+    readFileSync(join(RIVERCORD_FILES_DIR, "rivercordDesktopRenderer.js"), "utf-8")
 );
 
 handleSync(IpcEvents.GET_RENDERER_SCRIPT, () => readFileSync(join(__dirname, "renderer.js"), "utf-8"));

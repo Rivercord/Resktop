@@ -73,6 +73,8 @@ function isOutdated(oldVersion: string, newVersion: string) {
 }
 
 export async function checkUpdates() {
+    return; // Not required
+    
     if (Settings.store.checkUpdates === false) return;
 
     try {
