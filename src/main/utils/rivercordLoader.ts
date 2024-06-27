@@ -4,7 +4,7 @@
  * Copyright (c) 2023 Vendicated and Vencord contributors
  */
 
-import { existsSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
 import { RIVERCORD_FILES_DIR,USER_AGENT } from "../constants";
@@ -66,12 +66,23 @@ export async function downloadRivercordFiles() {
 }
 
 export function isValidRivercordInstall(dir: string) {
-    return FILES_TO_DOWNLOAD.every(f => existsSync(join(dir, f)));
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    const lastUpdatePath = join(dir, "lastUpdate.txt");
+    if (!existsSync(lastUpdatePath)) writeFileSync(lastUpdatePath, "0");
+    const lastUpdateAt = parseInt(readFileSync(lastUpdatePath, "utf-8").trim());
+    const now = Date.now();
+    
+    
+    return now - lastUpdateAt < 60000;
 }
 
 export async function ensureRivercordFiles() {
-    // if (isValidRivercordInstall(RIVERCORD_FILES_DIR)) return;
-    // mkdirSync(RIVERCORD_FILES_DIR, { recursive: true });
+    if (isValidRivercordInstall(RIVERCORD_FILES_DIR)) return;
+
+    const lastUpdatePath = join(RIVERCORD_FILES_DIR, "lastUpdate.txt");
+    writeFileSync(lastUpdatePath, `${Date.now()}`);
+
+    console.log("[RivercordLoader] Rivercord files are outdated, updating...");
 
     await downloadRivercordFiles();
 }

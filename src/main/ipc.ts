@@ -22,7 +22,7 @@ import { mainWin } from "./mainWindow";
 import { Settings } from "./settings";
 import { handle, handleSync } from "./utils/ipcWrappers";
 import { PopoutWindows } from "./utils/popout";
-import { isValidRivercordInstall } from "./utils/rivercordLoader";
+// import { isValidRivercordInstall } from "./utils/rivercordLoader";
 import { isDeckGameMode, showGamePage } from "./utils/steamOS";
 
 handleSync(IpcEvents.GET_RIVERCORD_PRELOAD_FILE, () => join(RIVERCORD_FILES_DIR, "rivercordDesktopPreload.js"));
@@ -112,7 +112,7 @@ handle(IpcEvents.SELECT_RIVERCORD_DIR, async () => {
     if (!res.filePaths.length) return "cancelled";
 
     const dir = res.filePaths[0];
-    if (!isValidRivercordInstall(dir)) return "invalid";
+    // if (!isValidRivercordInstall(dir)) return "invalid";
 
     return dir;
 });
