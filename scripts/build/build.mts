@@ -71,13 +71,13 @@ await Promise.all([
     }),
     createContext({
         ...CommonOpts,
-        globalName: "Vesktop",
+        globalName: "Resktop",
         entryPoints: ["src/renderer/index.ts"],
         outfile: "dist/js/renderer.js",
         format: "iife",
         inject: ["./scripts/build/injectReact.mjs"],
-        jsxFactory: "VencordCreateElement",
-        jsxFragment: "VencordFragment",
+        jsxFactory: "RivercordCreateElement",
+        jsxFragment: "RivercordFragment",
         external: ["@vencord/types/*"],
         plugins: [rivercordDep],
         footer: { js: "//# sourceURL=VCDRenderer" }

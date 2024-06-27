@@ -150,8 +150,7 @@
             ]
         },
         "nsis": {
-            "include": "build/installer.nsh",
-            "oneClick": false
+            "oneClick": true
         },
         "win": {
             "target": [
