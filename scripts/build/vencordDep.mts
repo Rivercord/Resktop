@@ -7,12 +7,12 @@
 import { globalExternalsWithRegExp } from "@fal-works/esbuild-plugin-global-externals";
 
 const names = {
-    webpack: "Vencord.Webpack",
-    "webpack/common": "Vencord.Webpack.Common",
-    utils: "Vencord.Util",
-    api: "Vencord.Api",
-    "api/settings": "Vencord",
-    components: "Vencord.Components"
+    webpack: "Rivercord.Webpack",
+    "webpack/common": "Rivercord.Webpack.Common",
+    utils: "Rivercord.Util",
+    api: "Rivercord.Api",
+    "api/settings": "Rivercord",
+    components: "Rivercord.Components"
 };
 
 export default globalExternalsWithRegExp({
