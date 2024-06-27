@@ -22,7 +22,7 @@ if (Settings.store.customTitleBar)
                     },
                     ...["close", "minimize", "maximize"].map(op => ({
                         match: new RegExp(String.raw`\i\.\i\.${op}\b`),
-                        replace: `VesktopNative.win.${op}`
+                        replace: `ResktopNative.win.${op}`
                     }))
                 ]
             }

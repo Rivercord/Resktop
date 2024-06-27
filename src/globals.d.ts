@@ -5,8 +5,8 @@
  */
 
 declare global {
-    export var VesktopNative: typeof import("preload/VesktopNative").VesktopNative;
-    export var Vesktop: typeof import("renderer/index");
+    export var ResktopNative: typeof import("preload/ResktopNative").ResktopNative;
+    export var Resktop: typeof import("renderer/index");
     export var VCDP: any;
 
     export var IS_DEV: boolean;

@@ -8,16 +8,16 @@ import { app } from "electron";
 import { existsSync, mkdirSync, readdirSync, renameSync, rmdirSync } from "fs";
 import { dirname, join } from "path";
 
-const vesktopDir = dirname(process.execPath);
+const resktopDir = dirname(process.execPath);
 
 export const PORTABLE =
     process.platform === "win32" &&
     !process.execPath.toLowerCase().endsWith("electron.exe") &&
-    !existsSync(join(vesktopDir, "Uninstall Vesktop.exe"));
+    !existsSync(join(resktopDir, "Uninstall Resktop.exe"));
 
-const LEGACY_DATA_DIR = join(app.getPath("appData"), "VencordDesktop", "VencordDesktop");
+const LEGACY_DATA_DIR = join(app.getPath("appData"), "RivercordDesktop", "RivercordDesktop");
 export const DATA_DIR =
-    process.env.VENCORD_USER_DATA_DIR || (PORTABLE ? join(vesktopDir, "Data") : join(app.getPath("userData")));
+    process.env.RIVERCORD_USER_DATA_DIR || (PORTABLE ? join(resktopDir, "Data") : join(app.getPath("userData")));
 
 mkdirSync(DATA_DIR, { recursive: true });
 
@@ -30,7 +30,7 @@ if (existsSync(LEGACY_DATA_DIR)) {
         }
         rmdirSync(LEGACY_DATA_DIR);
         renameSync(
-            join(app.getPath("appData"), "VencordDesktop", "IndexedDB"),
+            join(app.getPath("appData"), "RivercordDesktop", "IndexedDB"),
             join(DATA_DIR, "sessionData", "IndexedDB")
         );
     } catch (e) {
@@ -39,17 +39,17 @@ if (existsSync(LEGACY_DATA_DIR)) {
 }
 app.setPath("sessionData", join(DATA_DIR, "sessionData"));
 
-export const VENCORD_SETTINGS_DIR = join(DATA_DIR, "settings");
-export const VENCORD_QUICKCSS_FILE = join(VENCORD_SETTINGS_DIR, "quickCss.css");
-export const VENCORD_SETTINGS_FILE = join(VENCORD_SETTINGS_DIR, "settings.json");
-export const VENCORD_THEMES_DIR = join(DATA_DIR, "themes");
+export const RIVERCORD_SETTINGS_DIR = join(DATA_DIR, "settings");
+export const RIVERCORD_QUICKCSS_FILE = join(RIVERCORD_SETTINGS_DIR, "quickCss.css");
+export const RIVERCORD_SETTINGS_FILE = join(RIVERCORD_SETTINGS_DIR, "settings.json");
+export const RIVERCORD_THEMES_DIR = join(DATA_DIR, "themes");
 
 // needs to be inline require because of circular dependency
 // as otherwise "DATA_DIR" (which is used by ./settings) will be uninitialised
-export const VENCORD_FILES_DIR =
-    (require("./settings") as typeof import("./settings")).Settings.store.vencordDir || join(DATA_DIR, "vencordDist");
+export const RIVERCORD_FILES_DIR =
+    (require("./settings") as typeof import("./settings")).Settings.store.rivercordDir || join(DATA_DIR, "rivercordDist");
 
-export const USER_AGENT = `Vesktop/${app.getVersion()} (https://github.com/Vencord/Vesktop)`;
+export const USER_AGENT = `Resktop/${app.getVersion()} (https://github.com/Rivercord/Resktop)`;
 
 // dimensions shamelessly stolen from Discord Desktop :3
 export const MIN_WIDTH = 940;

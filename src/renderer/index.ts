@@ -25,7 +25,7 @@ export async function openInviteModal(code: string) {
     const { invite } = await InviteActions.resolveInvite(code, "Desktop Modal");
     if (!invite) return false;
 
-    VesktopNative.win.focus();
+    ResktopNative.win.focus();
 
     FluxDispatcher.dispatch({
         type: "INVITE_MODAL_OPEN",
@@ -37,22 +37,25 @@ export async function openInviteModal(code: string) {
     return true;
 }
 
+
 const customSettingsSections = (
-    Vencord.Plugins.plugins.Settings as any as { customSections: ((ID: Record<string, unknown>) => any)[] }
+    // @ts-ignore
+    Rivercord.Plugins.plugins.Settings as any as { customSections: ((ID: Record<string, unknown>) => any)[] }
 ).customSections;
 
 customSettingsSections.push(() => ({
-    section: "Vesktop",
-    label: "Vesktop Settings",
+    section: "Resktop",
+    label: "Resktop Settings",
     element: SettingsUi,
-    className: "vc-vesktop-settings"
+    className: "vc-Resktop-settings"
 }));
 
-const arRPC = Vencord.Plugins.plugins["WebRichPresence (arRPC)"] as any as {
+// @ts-ignore
+const arRPC = Rivercord.Plugins.plugins["WebRichPresence (arRPC)"] as any as {
     handleEvent(e: MessageEvent): void;
 };
 
-VesktopNative.arrpc.onActivity(async data => {
+ResktopNative.arrpc.onActivity(async data => {
     if (!Settings.store.arRPC) return;
 
     await onceReady;

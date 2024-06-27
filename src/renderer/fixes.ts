@@ -14,7 +14,7 @@ Object.defineProperty(Notification.prototype, "onclick", {
     set(onClick) {
         originalSetOnClick.call(this, function (this: unknown) {
             onClick.apply(this, arguments);
-            VesktopNative.win.focus();
+            ResktopNative.win.focus();
         });
     },
     configurable: true
@@ -24,7 +24,7 @@ Object.defineProperty(Notification.prototype, "onclick", {
 localStorage.setItem("hideNag", "true");
 
 // FIXME: Remove eventually.
-// Originally, Vencord always used a Windows user agent. This seems to cause captchas
+// Originally, Rivercord always used a Windows user agent. This seems to cause captchas
 // Now, we use a platform specific UA - HOWEVER, discord FOR SOME REASON????? caches
 // device props in localStorage. This code fixes their cache to properly update the platform in SuperProps
 if (!isWindows)

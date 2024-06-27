@@ -9,7 +9,7 @@ import { PORTABLE } from "main/constants";
 import { Settings, State } from "main/settings";
 import { handle } from "main/utils/ipcWrappers";
 import { makeLinksOpenExternally } from "main/utils/makeLinksOpenExternally";
-import { githubGet, ReleaseData } from "main/utils/vencordLoader";
+import { githubGet, ReleaseData } from "main/utils/rivercordLoader";
 import { join } from "path";
 import { IpcEvents } from "shared/IpcEvents";
 import { ICON_PATH, VIEW_DIR } from "shared/paths";

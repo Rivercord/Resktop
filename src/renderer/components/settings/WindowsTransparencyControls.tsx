@@ -10,7 +10,7 @@ import { Forms, Select } from "@vencord/types/webpack/common";
 import { SettingsComponent } from "./Settings";
 
 export const WindowsTransparencyControls: SettingsComponent = ({ settings }) => {
-    if (!VesktopNative.app.supportsWindowsTransparency()) return null;
+    if (!ResktopNative.app.supportsWindowsTransparency()) return null;
 
     return (
         <>
@@ -33,7 +33,7 @@ export const WindowsTransparencyControls: SettingsComponent = ({ settings }) => 
                     },
                     { label: "Tabbed (variant of Mica with stronger background tinting)", value: "tabbed" },
                     {
-                        label: "Acrylic (blurs the window behind Vesktop for a translucent background)",
+                        label: "Acrylic (blurs the window behind Resktop for a translucent background)",
                         value: "acrylic"
                     }
                 ]}

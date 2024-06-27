@@ -34,13 +34,13 @@ import {
     MessageBoxChoice,
     MIN_HEIGHT,
     MIN_WIDTH,
-    VENCORD_FILES_DIR
+    RIVERCORD_FILES_DIR
 } from "./constants";
-import { Settings, State, VencordSettings } from "./settings";
+import { RivercordSettings,Settings, State } from "./settings";
 import { createSplashWindow } from "./splash";
 import { makeLinksOpenExternally } from "./utils/makeLinksOpenExternally";
+import { downloadRivercordFiles, ensureRivercordFiles } from "./utils/rivercordLoader";
 import { applyDeckKeyboardFix, askToApplySteamLayout, isDeckGameMode } from "./utils/steamOS";
-import { downloadVencordFiles, ensureVencordFiles } from "./utils/vencordLoader";
 
 let isQuitting = false;
 let tray: Tray;
@@ -72,7 +72,7 @@ function makeSettingsListenerHelpers<O extends object>(o: SettingsStore<O>) {
 }
 
 const [addSettingsListener, removeSettingsListeners] = makeSettingsListenerHelpers(Settings);
-const [addVencordSettingsListener, removeVencordSettingsListeners] = makeSettingsListenerHelpers(VencordSettings);
+const [addRivercordSettingsListener, removeRivercordSettingsListeners] = makeSettingsListenerHelpers(RivercordSettings);
 
 function initTray(win: BrowserWindow) {
     const onTrayClick = () => {
@@ -91,15 +91,15 @@ function initTray(win: BrowserWindow) {
             click: createAboutWindow
         },
         {
-            label: "Update Vencord",
+            label: "Update Rivercord",
             async click() {
-                await downloadVencordFiles();
+                await downloadRivercordFiles();
                 app.relaunch();
                 app.quit();
             }
         },
         {
-            label: "Reset Vesktop",
+            label: "Reset Resktop",
             async click() {
                 await clearData(win);
             }
@@ -115,7 +115,7 @@ function initTray(win: BrowserWindow) {
             }
         },
         {
-            label: "Quit Vesktop",
+            label: "Quit Resktop",
             click() {
                 isQuitting = true;
                 app.quit();
@@ -124,15 +124,15 @@ function initTray(win: BrowserWindow) {
     ]);
 
     tray = new Tray(ICON_PATH);
-    tray.setToolTip("Vesktop");
+    tray.setToolTip("Resktop");
     tray.setContextMenu(trayMenu);
     tray.on("click", onTrayClick);
 }
 
 async function clearData(win: BrowserWindow) {
     const { response } = await dialog.showMessageBox(win, {
-        message: "Are you sure you want to reset Vesktop?",
-        detail: "This will log you out, clear caches and reset all your settings!\n\nVesktop will automatically restart after this operation.",
+        message: "Are you sure you want to reset Resktop?",
+        detail: "This will log you out, clear caches and reset all your settings!\n\nResktop will automatically restart after this operation.",
         buttons: ["Yes", "No"],
         cancelId: MessageBoxChoice.Cancel,
         defaultId: MessageBoxChoice.Default,
@@ -157,28 +157,28 @@ type MenuItemList = Array<MenuItemConstructorOptions | false>;
 function initMenuBar(win: BrowserWindow) {
     const isWindows = process.platform === "win32";
     const isDarwin = process.platform === "darwin";
-    const wantCtrlQ = !isWindows || VencordSettings.store.winCtrlQ;
+    const wantCtrlQ = !isWindows || RivercordSettings.store.winCtrlQ;
 
     const subMenu = [
         {
-            label: "About Vesktop",
+            label: "About Resktop",
             click: createAboutWindow
         },
         {
-            label: "Force Update Vencord",
+            label: "Force Update Rivercord",
             async click() {
-                await downloadVencordFiles();
+                await downloadRivercordFiles();
                 app.relaunch();
                 app.quit();
             },
-            toolTip: "Vesktop will automatically restart after this operation"
+            toolTip: "Resktop will automatically restart after this operation"
         },
         {
-            label: "Reset Vesktop",
+            label: "Reset Resktop",
             async click() {
                 await clearData(win);
             },
-            toolTip: "Vesktop will automatically restart after this operation"
+            toolTip: "Resktop will automatically restart after this operation"
         },
         {
             label: "Relaunch",
@@ -199,7 +199,7 @@ function initMenuBar(win: BrowserWindow) {
                       accelerator: "CmdOrCtrl+,",
                       async click() {
                           mainWin.webContents.executeJavaScript(
-                              "Vencord.Webpack.Common.SettingsRouter.open('My Account')"
+                              "Rivercord.Webpack.Common.SettingsRouter.open('My Account')"
                           );
                       }
                   },
@@ -247,7 +247,7 @@ function initMenuBar(win: BrowserWindow) {
 
     const menu = Menu.buildFromTemplate([
         {
-            label: "Vesktop",
+            label: "Resktop",
             role: "appMenu",
             submenu: subMenu.filter(isTruthy)
         },
@@ -293,7 +293,7 @@ function getDarwinOptions(): BrowserWindowConstructorOptions {
     } as BrowserWindowConstructorOptions;
 
     const { splashTheming, splashBackground } = Settings.store;
-    const { macosTranslucency } = VencordSettings.store;
+    const { macosTranslucency } = RivercordSettings.store;
 
     if (macosTranslucency) {
         options.vibrancy = "sidebar";
@@ -348,7 +348,7 @@ function initSettingsListeners(win: BrowserWindow) {
         }
     });
 
-    addVencordSettingsListener("macosTranslucency", enabled => {
+    addRivercordSettingsListener("macosTranslucency", enabled => {
         if (enabled) {
             win.setVibrancy("sidebar");
             win.setBackgroundColor("#ffffff00");
@@ -387,11 +387,11 @@ function initSpellCheck(win: BrowserWindow) {
 function createMainWindow() {
     // Clear up previous settings listeners
     removeSettingsListeners();
-    removeVencordSettingsListeners();
+    removeRivercordSettingsListeners();
 
     const { staticTitle, transparencyOption, enableMenu, customTitleBar } = Settings.store;
 
-    const { frameless, transparent } = VencordSettings.store;
+    const { frameless, transparent } = RivercordSettings.store;
 
     const noFrame = frameless === true || customTitleBar === true;
 
@@ -424,7 +424,7 @@ function createMainWindow() {
             transparencyOption !== "none" && {
                 transparent: true
             }),
-        ...(staticTitle && { title: "Vesktop" }),
+        ...(staticTitle && { title: "Resktop" }),
         ...(process.platform === "darwin" && getDarwinOptions()),
         ...getWindowBoundsOptions(),
         autoHideMenuBar: enableMenu
@@ -465,15 +465,15 @@ function createMainWindow() {
     return win;
 }
 
-const runVencordMain = once(() => require(join(VENCORD_FILES_DIR, "vencordDesktopMain.js")));
+const runRivercordMain = once(() => require(join(RIVERCORD_FILES_DIR, "RivercordDesktopMain.js")));
 
 export async function createWindows() {
     const startMinimized = process.argv.includes("--start-minimized");
     const splash = createSplashWindow(startMinimized);
     // SteamOS letterboxes and scales it terribly, so just full screen it
     if (isDeckGameMode) splash.setFullScreen(true);
-    await ensureVencordFiles();
-    runVencordMain();
+    await ensureRivercordFiles();
+    runRivercordMain();
 
     mainWin = createMainWindow();
 

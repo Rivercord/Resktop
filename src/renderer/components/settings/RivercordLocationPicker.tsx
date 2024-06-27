@@ -8,20 +8,20 @@ import { Button, Forms, Toasts } from "@vencord/types/webpack/common";
 
 import { SettingsComponent } from "./Settings";
 
-export const VencordLocationPicker: SettingsComponent = ({ settings }) => {
+export const RivercordLocationPicker: SettingsComponent = ({ settings }) => {
     return (
         <>
             <Forms.FormText>
-                Vencord files are loaded from{" "}
-                {settings.vencordDir ? (
+                Rivercord files are loaded from{" "}
+                {settings.rivercordDir ? (
                     <a
                         href="about:blank"
                         onClick={e => {
                             e.preventDefault();
-                            VesktopNative.fileManager.showItemInFolder(settings.vencordDir!);
+                            ResktopNative.fileManager.showItemInFolder(settings.rivercordDir!);
                         }}
                     >
-                        {settings.vencordDir}
+                        {settings.rivercordDir}
                     </a>
                 ) : (
                     "the default location"
@@ -31,20 +31,20 @@ export const VencordLocationPicker: SettingsComponent = ({ settings }) => {
                 <Button
                     size={Button.Sizes.SMALL}
                     onClick={async () => {
-                        const choice = await VesktopNative.fileManager.selectVencordDir();
+                        const choice = await ResktopNative.fileManager.selectRivercordDir();
                         switch (choice) {
                             case "cancelled":
                                 return;
                             case "invalid":
                                 Toasts.show({
                                     message:
-                                        "You did not choose a valid Vencord install. Make sure you're selecting the dist dir!",
+                                        "You did not choose a valid Rivercord install. Make sure you're selecting the dist dir!",
                                     id: Toasts.genId(),
                                     type: Toasts.Type.FAILURE
                                 });
                                 return;
                         }
-                        settings.vencordDir = choice;
+                        settings.rivercordDir = choice;
                     }}
                 >
                     Change
@@ -52,7 +52,7 @@ export const VencordLocationPicker: SettingsComponent = ({ settings }) => {
                 <Button
                     size={Button.Sizes.SMALL}
                     color={Button.Colors.RED}
-                    onClick={() => (settings.vencordDir = void 0)}
+                    onClick={() => (settings.rivercordDir = void 0)}
                 >
                     Reset
                 </Button>

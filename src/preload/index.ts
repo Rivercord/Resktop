@@ -8,13 +8,13 @@ import { contextBridge, ipcRenderer, webFrame } from "electron";
 import { readFileSync, watch } from "fs";
 
 import { IpcEvents } from "../shared/IpcEvents";
-import { VesktopNative } from "./VesktopNative";
+import { ResktopNative } from "./ResktopNative";
 
-contextBridge.exposeInMainWorld("VesktopNative", VesktopNative);
+contextBridge.exposeInMainWorld("ResktopNative", ResktopNative);
 
-require(ipcRenderer.sendSync(IpcEvents.GET_VENCORD_PRELOAD_FILE));
+require(ipcRenderer.sendSync(IpcEvents.GET_RIVERCORD_PRELOAD_FILE));
 
-webFrame.executeJavaScript(ipcRenderer.sendSync(IpcEvents.GET_VENCORD_RENDERER_SCRIPT));
+webFrame.executeJavaScript(ipcRenderer.sendSync(IpcEvents.GET_RIVERCORD_RENDERER_SCRIPT));
 webFrame.executeJavaScript(ipcRenderer.sendSync(IpcEvents.GET_RENDERER_SCRIPT));
 
 // #region css

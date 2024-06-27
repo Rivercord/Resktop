@@ -14,7 +14,7 @@ import { isMac, isWindows } from "renderer/utils";
 import { AutoStartToggle } from "./AutoStartToggle";
 import { DiscordBranchPicker } from "./DiscordBranchPicker";
 import { NotificationBadgeToggle } from "./NotificationBadgeToggle";
-import { VencordLocationPicker } from "./VencordLocationPicker";
+import { RivercordLocationPicker } from "./RivercordLocationPicker";
 import { WindowsTransparencyControls } from "./WindowsTransparencyControls";
 
 interface BooleanSetting {
@@ -49,7 +49,7 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
         {
             key: "staticTitle",
             title: "Static Title",
-            description: 'Makes the window title "Vesktop" instead of changing to the current page',
+            description: 'Makes the window title "Resktop" instead of changing to the current page',
             defaultValue: false
         },
         {
@@ -71,14 +71,14 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
         {
             key: "tray",
             title: "Tray Icon",
-            description: "Add a tray icon for Vesktop",
+            description: "Add a tray icon for Resktop",
             defaultValue: true,
             invisible: () => isMac
         },
         {
             key: "minimizeToTray",
             title: "Minimize to tray",
-            description: "Hitting X will make Vesktop minimize to the tray instead of closing",
+            description: "Hitting X will make Resktop minimize to the tray instead of closing",
             defaultValue: true,
             invisible: () => isMac,
             disabled: () => Settings.store.tray === false
@@ -86,7 +86,7 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
         {
             key: "clickTrayToShowHide",
             title: "Hide/Show on tray click",
-            description: "Left clicking tray icon will toggle the vesktop window visibility.",
+            description: "Left clicking tray icon will toggle the Resktop window visibility.",
             defaultValue: false
         },
         {
@@ -107,7 +107,7 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
         {
             key: "checkUpdates",
             title: "Check for updates",
-            description: "Automatically check for Vesktop updates",
+            description: "Automatically check for Resktop updates",
             defaultValue: true
         }
     ],
@@ -122,11 +122,11 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
         {
             key: "openLinksWithElectron",
             title: "Open Links in app (experimental)",
-            description: "Opens links in a new Vesktop window instead of your web browser",
+            description: "Opens links in a new Resktop window instead of your web browser",
             defaultValue: false
         }
     ],
-    "Vencord Location": [VencordLocationPicker]
+    "Rivercord Location": [RivercordLocationPicker]
 };
 
 function SettingsSections() {
@@ -167,7 +167,7 @@ export default function SettingsUi() {
     return (
         <Forms.FormSection>
             <Text variant="heading-lg/semibold" style={{ color: "var(--header-primary)" }} tag="h2">
-                Vesktop Settings
+                Resktop Settings
             </Text>
 
             <SettingsSections />

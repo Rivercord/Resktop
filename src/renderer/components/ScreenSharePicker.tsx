@@ -19,6 +19,7 @@ import {
     UserStore,
     useState
 } from "@vencord/types/webpack/common";
+// @ts-ignore
 import { Node } from "@vencord/venmic";
 import type { Dispatch, SetStateAction } from "react";
 import { addPatch } from "renderer/patches/shared";
@@ -64,7 +65,7 @@ interface Source {
 
 export let currentSettings: StreamSettings | null = null;
 
-const logger = new Logger("VesktopScreenShare");
+const logger = new Logger("ResktopScreenShare");
 
 addPatch({
     patches: [
@@ -114,7 +115,7 @@ if (isLinux) {
                 return;
             }
 
-            VesktopNative.virtmic.stop();
+            ResktopNative.virtmic.stop();
         });
     });
 }
@@ -132,11 +133,11 @@ export function openScreenSharePicker(screens: Source[], skipPicker: boolean) {
 
                         if (v.includeSources && v.includeSources !== "None") {
                             if (v.includeSources === "Entire System") {
-                                await VesktopNative.virtmic.startSystem(
+                                await ResktopNative.virtmic.startSystem(
                                     !v.excludeSources || isSpecialSource(v.excludeSources) ? [] : v.excludeSources
                                 );
                             } else {
-                                await VesktopNative.virtmic.start(v.includeSources);
+                                await ResktopNative.virtmic.start(v.includeSources);
                             }
                         }
 
@@ -295,7 +296,7 @@ function StreamSettings({
     const Settings = useSettings();
 
     const [thumb] = useAwaiter(
-        () => (skipPicker ? Promise.resolve(source.url) : VesktopNative.capturer.getLargeThumbnail(source.id)),
+        () => (skipPicker ? Promise.resolve(source.url) : ResktopNative.capturer.getLargeThumbnail(source.id)),
         {
             fallbackValue: source.url,
             deps: [source.id]
@@ -547,14 +548,14 @@ function AudioSourcePickerLinux({
     setIncludeSources: (s: AudioSources) => void;
     setExcludeSources: (s: AudioSources) => void;
 }) {
-    const [sources, _, loading] = useAwaiter(() => VesktopNative.virtmic.list(), {
+    const [sources, _, loading] = useAwaiter(() => ResktopNative.virtmic.list(), {
         fallbackValue: { ok: true, targets: [], hasPipewirePulse: true }
     });
 
     const hasPipewirePulse = sources.ok ? sources.hasPipewirePulse : true;
     const [ignorePulseWarning, setIgnorePulseWarning] = useState(false);
 
-    if (!sources.ok && sources.isGlibCxxOutdated) {
+    if (!sources.ok && (sources as any).isGlibCxxOutdated) {
         return (
             <Forms.FormText>
                 Failed to retrieve Audio Sources because your C++ library is too old to run

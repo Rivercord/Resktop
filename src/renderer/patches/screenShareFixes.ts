@@ -8,7 +8,7 @@ import { Logger } from "@vencord/types/utils";
 import { currentSettings } from "renderer/components/ScreenSharePicker";
 import { isLinux } from "renderer/utils";
 
-const logger = new Logger("VesktopStreamFixes");
+const logger = new Logger("ResktopStreamFixes");
 
 if (isLinux) {
     const original = navigator.mediaDevices.getDisplayMedia;
@@ -16,7 +16,7 @@ if (isLinux) {
     async function getVirtmic() {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
-            const audioDevice = devices.find(({ label }) => label === "vencord-screen-share");
+            const audioDevice = devices.find(({ label }) => label === "rivercord-screen-share");
             return audioDevice?.deviceId;
         } catch (error) {
             return null;

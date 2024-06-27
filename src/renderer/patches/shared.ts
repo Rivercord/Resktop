@@ -22,8 +22,9 @@ export function addPatch<P extends PatchData>(p: P) {
             if (typeof r.replace === "string") r.replace = r.replace.replaceAll("$self", "VCDP");
         }
 
-        patch.plugin = "Vesktop";
-        Vencord.Plugins.patches.push(patch);
+        patch.plugin = "Resktop";
+        // @ts-ignore
+        Rivercord.Plugins.patches.push(patch);
     }
 
     Object.assign(VCDP, globals);

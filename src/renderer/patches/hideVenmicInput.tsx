@@ -20,6 +20,6 @@ addPatch({
 
     async filteredDevices() {
         const original = await navigator.mediaDevices.enumerateDevices();
-        return original.filter(x => x.label !== "vencord-screen-share");
+        return original.filter(x => x.label !== "rivercord-screen-share");
     }
 });

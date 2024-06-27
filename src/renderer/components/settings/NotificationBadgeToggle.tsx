@@ -16,7 +16,7 @@ export const NotificationBadgeToggle: SettingsComponent = ({ settings }) => {
             onChange={v => {
                 settings.appBadge = v;
                 if (v) setBadge();
-                else VesktopNative.app.setBadgeCount(0);
+                else ResktopNative.app.setBadgeCount(0);
             }}
             note="Show mention badge on the app icon"
         >

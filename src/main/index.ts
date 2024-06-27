@@ -21,8 +21,8 @@ if (IS_DEV) {
     require("source-map-support").install();
 }
 
-// Make the Vencord files use our DATA_DIR
-process.env.VENCORD_USER_DATA_DIR = DATA_DIR;
+// Make the Rivercord files use our DATA_DIR
+process.env.RIVERCORD_USER_DATA_DIR = DATA_DIR;
 
 function init() {
     const { disableSmoothScroll, hardwareAcceleration } = Settings.store;
@@ -55,7 +55,7 @@ function init() {
     // WinRetrieveSuggestionsOnlyOnDemand: Work around electron 13 bug w/ async spellchecking on Windows.
     // HardwareMediaKeyHandling,MediaSessionService: Prevent Discord from registering as a media service.
     //
-    // WidgetLayering (Vencord Added): Fix DevTools context menus https://github.com/electron/electron/issues/38790
+    // WidgetLayering (Rivercord Added): Fix DevTools context menus https://github.com/electron/electron/issues/38790
     disabledFeatures.push("WinRetrieveSuggestionsOnlyOnDemand", "HardwareMediaKeyHandling", "MediaSessionService");
 
     app.commandLine.appendSwitch("enable-features", [...new Set(enabledFeatures)].filter(Boolean).join(","));
@@ -75,7 +75,7 @@ function init() {
 
     app.whenReady().then(async () => {
         checkUpdates();
-        if (process.platform === "win32") app.setAppUserModelId("dev.vencord.vesktop");
+        if (process.platform === "win32") app.setAppUserModelId("dev.rivercord.Resktop");
 
         registerScreenShareHandler();
         registerMediaPermissionsHandler();
@@ -90,10 +90,10 @@ function init() {
 
 if (!app.requestSingleInstanceLock({ IS_DEV })) {
     if (IS_DEV) {
-        console.log("Vesktop is already running. Quitting previous instance...");
+        console.log("Resktop is already running. Quitting previous instance...");
         init();
     } else {
-        console.log("Vesktop is already running. Quitting...");
+        console.log("Resktop is already running. Quitting...");
         app.quit();
     }
 } else {

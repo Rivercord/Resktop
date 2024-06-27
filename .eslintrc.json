@@ -7,8 +7,7 @@
         "license-header",
         "simple-import-sort",
         "unused-imports",
-        "path-alias",
-        "prettier"
+        "path-alias"
     ],
     "settings": {
         "import/resolver": {
@@ -62,8 +61,6 @@
 
         "unused-imports/no-unused-imports": "error",
 
-        "path-alias/no-relative": "error",
-
-        "prettier/prettier": "error"
+        "path-alias/no-relative": "error"
     }
 }

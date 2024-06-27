@@ -17,17 +17,17 @@ import { debounce } from "shared/utils/debounce";
 import { IpcEvents } from "../shared/IpcEvents";
 import { setBadgeCount } from "./appBadge";
 import { autoStart } from "./autoStart";
-import { VENCORD_FILES_DIR, VENCORD_QUICKCSS_FILE, VENCORD_THEMES_DIR } from "./constants";
+import { RIVERCORD_FILES_DIR, RIVERCORD_QUICKCSS_FILE, RIVERCORD_THEMES_DIR } from "./constants";
 import { mainWin } from "./mainWindow";
 import { Settings } from "./settings";
 import { handle, handleSync } from "./utils/ipcWrappers";
 import { PopoutWindows } from "./utils/popout";
+import { isValidRivercordInstall } from "./utils/rivercordLoader";
 import { isDeckGameMode, showGamePage } from "./utils/steamOS";
-import { isValidVencordInstall } from "./utils/vencordLoader";
 
-handleSync(IpcEvents.GET_VENCORD_PRELOAD_FILE, () => join(VENCORD_FILES_DIR, "vencordDesktopPreload.js"));
-handleSync(IpcEvents.GET_VENCORD_RENDERER_SCRIPT, () =>
-    readFileSync(join(VENCORD_FILES_DIR, "vencordDesktopRenderer.js"), "utf-8")
+handleSync(IpcEvents.GET_RIVERCORD_PRELOAD_FILE, () => join(RIVERCORD_FILES_DIR, "RivercordDesktopPreload.js"));
+handleSync(IpcEvents.GET_RIVERCORD_RENDERER_SCRIPT, () =>
+    readFileSync(join(RIVERCORD_FILES_DIR, "RivercordDesktopRenderer.js"), "utf-8")
 );
 
 handleSync(IpcEvents.GET_RENDERER_SCRIPT, () => readFileSync(join(__dirname, "renderer.js"), "utf-8"));
@@ -105,14 +105,14 @@ handle(IpcEvents.SPELLCHECK_ADD_TO_DICTIONARY, (e, word: string) => {
     e.sender.session.addWordToSpellCheckerDictionary(word);
 });
 
-handle(IpcEvents.SELECT_VENCORD_DIR, async () => {
+handle(IpcEvents.SELECT_RIVERCORD_DIR, async () => {
     const res = await dialog.showOpenDialog(mainWin!, {
         properties: ["openDirectory"]
     });
     if (!res.filePaths.length) return "cancelled";
 
     const dir = res.filePaths[0];
-    if (!isValidVencordInstall(dir)) return "invalid";
+    if (!isValidRivercordInstall(dir)) return "invalid";
 
     return dir;
 });
@@ -127,25 +127,25 @@ handle(IpcEvents.CLIPBOARD_COPY_IMAGE, async (_, buf: ArrayBuffer, src: string) 
 });
 
 function readCss() {
-    return readFile(VENCORD_QUICKCSS_FILE, "utf-8").catch(() => "");
+    return readFile(RIVERCORD_QUICKCSS_FILE, "utf-8").catch(() => "");
 }
 
-open(VENCORD_QUICKCSS_FILE, "a+").then(fd => {
+open(RIVERCORD_QUICKCSS_FILE, "a+").then(fd => {
     fd.close();
     watch(
-        VENCORD_QUICKCSS_FILE,
+        RIVERCORD_QUICKCSS_FILE,
         { persistent: false },
         debounce(async () => {
-            mainWin?.webContents.postMessage("VencordQuickCssUpdate", await readCss());
+            mainWin?.webContents.postMessage("RivercordQuickCssUpdate", await readCss());
         }, 50)
     );
 });
 
-mkdirSync(VENCORD_THEMES_DIR, { recursive: true });
+mkdirSync(RIVERCORD_THEMES_DIR, { recursive: true });
 watch(
-    VENCORD_THEMES_DIR,
+    RIVERCORD_THEMES_DIR,
     { persistent: false },
     debounce(() => {
-        mainWin?.webContents.postMessage("VencordThemeUpdate", void 0);
+        mainWin?.webContents.postMessage("RivercordThemeUpdate", void 0);
     })
 );
