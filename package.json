@@ -22,8 +22,8 @@
         "testTypes": "tsc --noEmit",
         "watch": "pnpm build --watch",
         "updateMeta": "tsx scripts/utils/updateMeta.mts",
-        "extra:build:win": "electron-builder --windows --x64",
-        "extra:build:linux": "electron-builder --linux --x64"
+        "extra:build:win": "pnpm build && electron-builder --windows --x64",
+        "extra:build:linux": "pnpm build && electron-builder --linux --x64"
     },
     "dependencies": {
         "arrpc": "github:OpenAsar/arrpc#c62ec6a04c8d870530aa6944257fe745f6c59a24"
