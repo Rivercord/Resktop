@@ -4,7 +4,7 @@
  * Copyright (c) 2023 Vendicated and Vencord contributors
  */
 
-import { existsSync, mkdirSync } from "fs";
+import { existsSync } from "fs";
 import { join } from "path";
 
 import { RIVERCORD_FILES_DIR,USER_AGENT } from "../constants";
@@ -70,8 +70,8 @@ export function isValidRivercordInstall(dir: string) {
 }
 
 export async function ensureRivercordFiles() {
-    if (isValidRivercordInstall(RIVERCORD_FILES_DIR)) return;
-    mkdirSync(RIVERCORD_FILES_DIR, { recursive: true });
+    // if (isValidRivercordInstall(RIVERCORD_FILES_DIR)) return;
+    // mkdirSync(RIVERCORD_FILES_DIR, { recursive: true });
 
     await downloadRivercordFiles();
 }
