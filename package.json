@@ -1,12 +1,12 @@
 {
     "name": "resktop",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "private": true,
-    "description": "",
+    "description": "Rivercord Desktop Client",
     "keywords": [],
     "homepage": "https://vencord.dev/",
     "license": "GPL-3.0",
-    "author": "Vendicated <vendicated@riseup.net>",
+    "author": "TheArmagan <kiracarmaganonal@gmail.com>",
     "main": "dist/js/main.js",
     "scripts": {
         "build": "tsx scripts/build/build.mts",
@@ -72,6 +72,7 @@
             "package.json",
             "LICENSE"
         ],
+        "icon": "static/icon.png",
         "beforePack": "scripts/build/sandboxFix.js",
         "linux": {
             "icon": "build/icon.icns",
@@ -150,7 +151,12 @@
             ]
         },
         "nsis": {
-            "oneClick": true
+            "oneClick": true,
+            "perMachine": false,
+            "allowToChangeInstallationDirectory": false,
+            "installerIcon": "static/icon.ico",
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true
         },
         "win": {
             "target": [
