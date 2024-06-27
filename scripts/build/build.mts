@@ -7,7 +7,7 @@
 import { BuildContext, BuildOptions, context } from "esbuild";
 import { copyFile } from "fs/promises";
 
-import vencordDep from "./vencordDep.mjs";
+import rivercordDep from "./rivercordDep.mjs";
 
 const isDev = process.argv.includes("--dev");
 
@@ -79,7 +79,7 @@ await Promise.all([
         jsxFactory: "VencordCreateElement",
         jsxFragment: "VencordFragment",
         external: ["@vencord/types/*"],
-        plugins: [vencordDep],
+        plugins: [rivercordDep],
         footer: { js: "//# sourceURL=VCDRenderer" }
     })
 ]);
