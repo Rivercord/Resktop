@@ -1,5 +1,5 @@
 {
-    "name": "vesktop",
+    "name": "resktop",
     "version": "1.5.2",
     "private": true,
     "description": "",
@@ -61,8 +61,8 @@
         "pnpm": ">=8"
     },
     "build": {
-        "appId": "dev.vencord.vesktop",
-        "productName": "Vesktop",
+        "appId": "app.rivercord.resktop",
+        "productName": "Resktop",
         "files": [
             "!*",
             "dist/js",
@@ -106,11 +106,11 @@
                 }
             ],
             "desktop": {
-                "Name": "Vesktop",
+                "Name": "Resktop",
                 "GenericName": "Internet Messenger",
                 "Type": "Application",
                 "Categories": "Network;InstantMessaging;Chat;",
-                "Keywords": "discord;vencord;electron;chat;"
+                "Keywords": "discord;rivercord;electron;chat;"
             }
         },
         "mac": {
