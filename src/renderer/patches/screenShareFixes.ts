@@ -16,7 +16,7 @@ if (isLinux) {
     async function getVirtmic() {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
-            const audioDevice = devices.find(({ label }) => label === "rivercord-screen-share");
+            const audioDevice = devices.find(({ label }) => label === "vencord-screen-share");
             return audioDevice?.deviceId;
         } catch (error) {
             return null;

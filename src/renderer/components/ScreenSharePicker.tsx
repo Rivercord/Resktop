@@ -162,14 +162,18 @@ export function openScreenSharePicker(screens: Source[], skipPicker: boolean) {
 
 function ScreenPicker({ screens, chooseScreen }: { screens: Source[]; chooseScreen: (id: string) => void }) {
     return (
-        <div className="vcd-screen-picker-grid">
+        <div className="rcd-screen-picker">
             {screens.map(({ id, name, url }) => (
-                <label key={id}>
-                    <input type="radio" name="screen" value={id} onChange={() => chooseScreen(id)} />
+                <div className="picker-item" onClick={() => chooseScreen(id)}>
+                    <div className="image" style={{ backgroundImage: `url('${url}')` }}></div>
+                    <Text className="text" variant="text-sm/bold">{name}</Text>
+                </div>
+                // <label key={id}>
+                //     <input type="radio" name="screen" value={id} onChange={() => chooseScreen(id)} />
 
-                    <img src={url} alt="" />
-                    <Text variant="text-sm/normal">{name}</Text>
-                </label>
+                //     <img src={url} alt="" />
+                //     <Text variant="text-sm/normal">{name}</Text>
+                // </label>
             ))}
         </div>
     );
@@ -323,6 +327,7 @@ function StreamSettings({
                     src={thumb}
                     alt=""
                     className={isLinux ? "vcd-screen-picker-preview-img-linux" : "vcd-screen-picker-preview-img"}
+                    draggable={false}
                 />
                 <Text variant="text-sm/normal">{source.name}</Text>
             </Card>

@@ -19,6 +19,6 @@ addPatch({
     ],
 
     shouldIgnore(state: any) {
-        return Object.keys(state?.default?.lastDeviceConnected ?? {})?.[0] === "rivercord-screen-share";
+        return Object.keys(state?.default?.lastDeviceConnected ?? {})?.[0] === "vencord-screen-share";
     }
 });
