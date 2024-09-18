@@ -22,114 +22,114 @@ let hasPipewirePulse = false;
 let isGlibCxxOutdated = false;
 
 function importVenmic() {
-    if (imported) {
-        return;
-    }
+  if (imported) {
+    return;
+  }
 
-    imported = true;
+  imported = true;
 
-    try {
-        PatchBay = (require(join(STATIC_DIR, `dist/venmic-${process.arch}.node`)) as typeof import("@vencord/venmic"))
-            .PatchBay;
+  try {
+    PatchBay = (require(join(STATIC_DIR, `dist/venmic-${process.arch}.node`)) as typeof import("@vencord/venmic"))
+      .PatchBay;
 
-        hasPipewirePulse = PatchBay.hasPipeWire();
-    } catch (e: any) {
-        console.error("Failed to import venmic", e);
-        isGlibCxxOutdated = (e?.stack || e?.message || "").toLowerCase().includes("glibc");
-    }
+    hasPipewirePulse = PatchBay.hasPipeWire();
+  } catch (e: any) {
+    console.error("Failed to import venmic", e);
+    isGlibCxxOutdated = (e?.stack || e?.message || "").toLowerCase().includes("glibc");
+  }
 }
 
 function obtainVenmic() {
-    if (!imported) {
-        importVenmic();
+  if (!imported) {
+    importVenmic();
+  }
+
+  if (PatchBay && !initialized) {
+    initialized = true;
+
+    try {
+      patchBayInstance = new PatchBay();
+    } catch (e: any) {
+      console.error("Failed to instantiate venmic", e);
     }
+  }
 
-    if (PatchBay && !initialized) {
-        initialized = true;
-
-        try {
-            patchBayInstance = new PatchBay();
-        } catch (e: any) {
-            console.error("Failed to instantiate venmic", e);
-        }
-    }
-
-    return patchBayInstance;
+  return patchBayInstance;
 }
 
 function getRendererAudioServicePid() {
-    return (
-        app
-            .getAppMetrics()
-            .find(proc => proc.name === "Audio Service")
-            ?.pid?.toString() ?? "owo"
-    );
+  return (
+    app
+      .getAppMetrics()
+      .find(proc => proc.name === "Audio Service")
+      ?.pid?.toString() ?? "owo"
+  );
 }
 
 ipcMain.handle(IpcEvents.VIRT_MIC_LIST, () => {
-    const audioPid = getRendererAudioServicePid();
+  const audioPid = getRendererAudioServicePid();
 
-    const { granularSelect } = Settings.store.audio ?? {};
+  const { granularSelect } = Settings.store.audio ?? {};
 
-    const targets = obtainVenmic()
-        ?.list(granularSelect ? ["application.process.id"] : undefined)
-        .filter(s => s["application.process.id"] !== audioPid);
+  const targets = obtainVenmic()
+    ?.list(granularSelect ? ["node.name"] : undefined)
+    .filter(s => s["application.process.id"] !== audioPid);
 
-    return targets ? { ok: true, targets, hasPipewirePulse } : { ok: false, isGlibCxxOutdated };
+  return targets ? { ok: true, targets, hasPipewirePulse } : { ok: false, isGlibCxxOutdated };
 });
 
 ipcMain.handle(IpcEvents.VIRT_MIC_START, (_, include: Node[]) => {
-    const pid = getRendererAudioServicePid();
-    const { ignoreDevices, ignoreInputMedia, ignoreVirtual, workaround } = Settings.store.audio ?? {};
+  const pid = getRendererAudioServicePid();
+  const { ignoreDevices, ignoreInputMedia, ignoreVirtual, workaround } = Settings.store.audio ?? {};
 
-    const data: LinkData = {
-        include,
-        exclude: [{ "application.process.id": pid }],
-        ignore_devices: ignoreDevices
-    };
+  const data: LinkData = {
+    include,
+    exclude: [{ "application.process.id": pid }],
+    ignore_devices: ignoreDevices
+  };
 
-    if (ignoreInputMedia ?? true) {
-        data.exclude.push({ "media.class": "Stream/Input/Audio" });
-    }
+  if (ignoreInputMedia ?? true) {
+    data.exclude.push({ "media.class": "Stream/Input/Audio" });
+  }
 
-    if (ignoreVirtual) {
-        data.exclude.push({ "node.virtual": "true" });
-    }
+  if (ignoreVirtual) {
+    data.exclude.push({ "node.virtual": "true" });
+  }
 
-    if (workaround) {
-        data.workaround = [{ "application.process.id": pid, "media.name": "RecordStream" }];
-    }
+  if (workaround) {
+    data.workaround = [{ "application.process.id": pid, "media.name": "RecordStream" }];
+  }
 
-    return obtainVenmic()?.link(data);
+  return obtainVenmic()?.link(data);
 });
 
 ipcMain.handle(IpcEvents.VIRT_MIC_START_SYSTEM, (_, exclude: Node[]) => {
-    const pid = getRendererAudioServicePid();
+  const pid = getRendererAudioServicePid();
 
-    const { workaround, ignoreDevices, ignoreInputMedia, ignoreVirtual, onlySpeakers, onlyDefaultSpeakers } =
-        Settings.store.audio ?? {};
+  const { workaround, ignoreDevices, ignoreInputMedia, ignoreVirtual, onlySpeakers, onlyDefaultSpeakers } =
+    Settings.store.audio ?? {};
 
-    const data: LinkData = {
-        include: [],
-        exclude: [{ "application.process.id": pid }, ...exclude],
-        only_speakers: onlySpeakers,
-        ignore_devices: ignoreDevices,
-        only_default_speakers: onlyDefaultSpeakers
-    };
+  const data: LinkData = {
+    include: [],
+    exclude: [{ "application.process.id": pid }, ...exclude],
+    only_speakers: onlySpeakers,
+    ignore_devices: ignoreDevices,
+    only_default_speakers: onlyDefaultSpeakers
+  };
 
-    if (ignoreInputMedia ?? true) {
-        data.exclude.push({ "media.class": "Stream/Input/Audio" });
-    }
+  if (ignoreInputMedia ?? true) {
+    data.exclude.push({ "media.class": "Stream/Input/Audio" });
+  }
 
-    if (ignoreVirtual) {
-        data.exclude.push({ "node.virtual": "true" });
-    }
+  if (ignoreVirtual) {
+    data.exclude.push({ "node.virtual": "true" });
+  }
 
-    if (workaround) {
-        data.workaround = [{ "application.process.id": pid, "media.name": "RecordStream" }];
-    }
+  if (workaround) {
+    data.workaround = [{ "application.process.id": pid, "media.name": "RecordStream" }];
+  }
 
-    return obtainVenmic()?.link(data);
+  return obtainVenmic()?.link(data);
 });
 
 ipcMain.handle(IpcEvents.VIRT_MIC_STOP, () => obtainVenmic()?.unlink());
